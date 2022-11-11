@@ -129,7 +129,19 @@ def get_detailed_listing_database(html_file):
         ...
     ]
     """
+    results = get_listings_from_search_results(html_file)
+    return_value = []
+
+    for x in results:
+        variable = x[2]
+        listing_info = get_listing_information(variable)
+
+        tup = (x[0], x[1], x[2], listing_info[0], listing_info[1], listing_info[2])
+        return_value.append(tup)
+
+    return return_value
     pass
+    
 
 
 def write_csv(data, filename):
@@ -243,24 +255,24 @@ class TestCases(unittest.TestCase):
         self.assertEqual(listing_informations[2][2], 1)
         pass
 
-    # def test_get_detailed_listing_database(self):
-    #     # call get_detailed_listing_database on "html_files/mission_district_search_results.html"
-    #     # and save it to a variable
-    #     detailed_database = get_detailed_listing_database("html_files/mission_district_search_results.html")
-    #     # # check that we have the right number of listings (20)
-    #     self.assertEqual(len(detailed_database), 20)
-    #     for item in detailed_database:
-    #     #     # assert each item in the list of listings is a tuple
-    #         self.assertEqual(type(item), tuple)
-    #     #     check that each tuple has a length of 6
-
-    #     # check that the first tuple is made up of the following:
-    #     # 'Loft in Mission District', 210, '1944564', '2022-004088STR', 'Entire Room', 1
-
-    #     # check that the last tuple is made up of the following:
-    #     # 'Guest suite in Mission District', 238, '32871760', 'STR-0004707', 'Entire Room', 1
-
-    #     pass
+    def test_get_detailed_listing_database(self):
+        # call get_detailed_listing_database on "html_files/mission_district_search_results.html"
+        # and save it to a variable
+        detailed_database = get_detailed_listing_database("html_files/mission_district_search_results.html")
+        # # check that we have the right number of listings (20)
+        self.assertEqual(len(detailed_database), 20)
+        for item in detailed_database:
+        #     # assert each item in the list of listings is a tuple
+            self.assertEqual(type(item), tuple)
+        #     check that each tuple has a length of 6
+        self.assertEqual(len(item), 6)
+        # check that the first tuple is made up of the following:
+        # 'Loft in Mission District', 210, '1944564', '2022-004088STR', 'Entire Room', 1
+        self.assertEqual(detailed_database[0], ('Loft in Mission District', 210, '1944564', '2022-004088STR', 'Entire Room', 1))
+        # check that the last tuple is made up of the following:
+        # 'Guest suite in Mission District', 238, '32871760', 'STR-0004707', 'Entire Room', 1
+        self.assertEqual(detailed_database[-1], ('Guest suite in Mission District', 238, '32871760', 'STR-0004707', 'Entire Room', 1))
+        pass
 
     # def test_write_csv(self):
     #     # call get_detailed_listing_database on "html_files/mission_district_search_results.html"
