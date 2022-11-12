@@ -224,12 +224,12 @@ def extra_credit(listing_id):
     never gone over their limit.
     """
     pass
-
+    
     
     url = "html_files/listing_" + listing_id + "_reviews.html"
-    with open(url, encoding="utf-8") as fh:
-        filename = fh.read()
-        soup = BeautifulSoup(fh.read(),'html.parser')
+    with open(url, encoding="utf-8") as f:
+        filename = f.read()
+        soup = BeautifulSoup(filename,'html.parser')
         date = soup.find_all("li", class_ = "_1f1oir5")
         date_listing = []
         year_listing = {}
@@ -237,9 +237,11 @@ def extra_credit(listing_id):
             date_listing.append(data.text)
         for dates in date_listing:
             year = dates.split()[-1]
+
             if year not in year_listing.keys():
                 year_listing[year] = 0
             year_listing[year] += 1
+            
         for x in year_listing.values():
             if x > 90:
                 return False
@@ -350,8 +352,8 @@ class TestCases(unittest.TestCase):
         pass
     
     def test_extra_credit(self):
-        self.assertTrue(extra_credit('1944564'))
-        self.assertFalse(extra_credit('16204265'))
+        self.assertEqual(extra_credit('1944564'), True)
+        self.assertEqual(extra_credit('16204265'), False)
 
 if __name__ == '__main__':
     database = get_detailed_listing_database("html_files/mission_district_search_results.html")
